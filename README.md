@@ -92,7 +92,13 @@ Then return to **Accessibility**, enable `FlowDictation`, and relaunch Flow. Thi
 
 ## Build from source
 
-Homebrew supplies the `whisper.cpp` runtime and `libomp` that the build bundles into the app. It is a build dependency; the finished app does not call Homebrew at runtime.
+Building needs the Xcode command line tools, for the Swift compiler and `install_name_tool`:
+
+```zsh
+xcode-select --install
+```
+
+Homebrew supplies the `whisper.cpp` runtime and `libomp` that the build bundles into the app. Both are build dependencies; the finished app does not call Homebrew at runtime. `brew install whisper-cpp` also pulls in `ggml`, which the build script requires.
 
 ```zsh
 brew install whisper-cpp libomp
@@ -331,6 +337,23 @@ In this configuration, the only temporary artifact is a WAV file under the macOS
 | `Quit Flow Dictation` | Stops recording and exits the menu-bar app. |
 
 ## Troubleshooting
+
+### The model download does not finish
+
+The menu item returns to `Download Small English Model (488 MB)` and the menu still reports `Local model: download required`. The menu bar icon shows `Flow !`.
+
+The download is a single 488 MB request, so an interruption partway through fails the whole attempt. Flow verifies the file against a known SHA-256 before installing it, and discards anything that does not match, so a failed attempt never leaves a partial or corrupt model behind. Selecting the menu item again is safe.
+
+If repeated attempts fail, download the model manually and place it where Flow expects it:
+
+```zsh
+mkdir -p ~/Library/Application\ Support/FlowDictation/Models
+curl -L -o ~/Library/Application\ Support/FlowDictation/Models/ggml-small.en.bin \
+  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin
+shasum -a 256 ~/Library/Application\ Support/FlowDictation/Models/ggml-small.en.bin
+```
+
+The checksum must be `c6138d6d58ecc8322097e0f987c32f1be8bb0a18532a3f88f734d1bbf9c41e5d`. Quit and relaunch Flow afterwards so it picks up the model.
 
 ### The Fn pill only appears after opening Flow
 
