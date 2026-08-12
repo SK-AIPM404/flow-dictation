@@ -54,17 +54,18 @@ flowchart LR
 | `PasteInjector` | Restores the original target app, waits for it to become active, and posts standard Command-V. |
 | `SettingsStore` | Reads and writes `~/.flow-dictation/config.json`; `.env` is read only for API keys. |
 
-## Install from GitHub
+## Install
 
-The GitHub repository is the source of truth; [GitHub Releases](../../releases) is the normal installation path. A release contains a `FlowDictation-<version>-<architecture>.dmg` and its `.sha256` checksum.
+Flow Dictation is currently distributed as **source only**. There are no prebuilt downloads yet: the app is not signed with an Apple Developer ID and is not notarized, so a downloaded build would be blocked by Gatekeeper. Building locally avoids that entirely, because macOS does not quarantine software compiled on the machine itself.
 
-1. Download the DMG matching the Mac architecture: `arm64` for Apple Silicon or `x86_64` for Intel.
-2. Open it and drag **Flow Dictation.app** to **Applications**.
-3. Launch Flow Dictation from Applications. Do not use `open -n`; it starts a second process and can duplicate hotkey handling.
-4. Open the **Flow** menu bar item and select **Download Small English Model (488 MB)**. The app verifies the downloaded file before installing it in `~/Library/Application Support/FlowDictation/Models/`.
-5. Grant the three permissions below.
+Installing therefore means building once, which needs Xcode command line tools and Homebrew.
 
-The DMG includes the `whisper.cpp` runtime and its Apple Silicon backend plug-ins. Users do **not** need Homebrew, Python, a terminal, an account, or an API key for the local speech-to-text path.
+1. Build the app by following [Build from source](#build-from-source) below.
+2. Drag `dist/FlowDictation.app` to **Applications**, then launch it from there. Do not use `open -n`; it starts a second process and can duplicate hotkey handling.
+3. Open the **Flow** menu bar item and select **Download Small English Model (488 MB)**. The app verifies the downloaded file before installing it in `~/Library/Application Support/FlowDictation/Models/`.
+4. Grant the three permissions below.
+
+The build bundles the `whisper.cpp` runtime and its Apple Silicon backend plug-ins into the app, so the local speech-to-text path needs no account, API key, or network access once the model is downloaded.
 
 ### Grant macOS permissions
 
@@ -91,7 +92,7 @@ Then return to **Accessibility**, enable `FlowDictation`, and relaunch Flow. Thi
 
 ## Build from source
 
-Homebrew is a **build dependency only**. It is not required by people installing the published DMG.
+Homebrew supplies the `whisper.cpp` runtime and `libomp` that the build bundles into the app. It is a build dependency; the finished app does not call Homebrew at runtime.
 
 ```zsh
 brew install whisper-cpp libomp
