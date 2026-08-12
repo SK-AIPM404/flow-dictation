@@ -95,12 +95,13 @@ Homebrew is a **build dependency only**. It is not required by people installing
 
 ```zsh
 brew install whisper-cpp libomp
-cd /Users/shobit/Documents/wispr_flow_clone
+git clone https://github.com/SK-AIPM404/flow-dictation.git
+cd flow-dictation
 ./scripts/build-app.sh
 open "$(pwd)/dist/FlowDictation.app"
 ```
 
-The normal source build uses the persistent local identity `Flow Dictation Local Signing v2` on this Mac. For an unsigned development build on another Mac:
+`build-app.sh` signs with the local identity `Flow Dictation Local Signing v2` if it exists in the keychain. That identity is specific to the original development Mac, so on any other machine use an ad-hoc signature instead:
 
 ```zsh
 FLOW_DICTATION_SIGNING_IDENTITY=- ./scripts/build-app.sh
@@ -109,7 +110,7 @@ FLOW_DICTATION_SIGNING_IDENTITY=- ./scripts/build-app.sh
 ## Build a DMG
 
 ```zsh
-cd /Users/shobit/Documents/wispr_flow_clone
+cd /path/to/flow-dictation
 ./scripts/build-dmg.sh
 ```
 
@@ -356,9 +357,9 @@ Check **Microphone** permission and the selected input device in macOS Sound set
 Build it first, then launch the bundle with an absolute path:
 
 ```zsh
-cd /Users/shobit/Documents/wispr_flow_clone
+cd /path/to/flow-dictation
 ./scripts/build-app.sh
-open "/Users/shobit/Documents/wispr_flow_clone/dist/FlowDictation.app"
+open "$(pwd)/dist/FlowDictation.app"
 ```
 
 ## Repository layout
