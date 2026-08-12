@@ -1,0 +1,38 @@
+{
+  "enabled": true,
+  "hotkey": {
+    "kind": "fn",
+    "keyCode": 49,
+    "modifiers": ["command", "shift"]
+  },
+  "transcription": {
+    "mode": "local",
+    "openAIModel": "whisper-1",
+    "groqModel": "whisper-large-v3-turbo"
+  },
+  "localWhisper": {
+    "whisperBinary": "bundled",
+    "modelPath": "~/Library/Application Support/FlowDictation/Models/ggml-small.en.bin",
+    "extraArgs": []
+  },
+  "llm": {
+    "enabled": true,
+    "provider": "auto",
+    "openAIModel": "gpt-4o-mini",
+    "groqModel": "llama-3.1-8b-instant"
+  },
+  "cleanup": {
+    "verbatimMode": false,
+    "removeFillers": true,
+    "resolveRetractions": true,
+    "improveHinglish": true,
+    "formatLists": true,
+    "deterministicFormatting": true,
+    "paragraphBreaksFromPauses": true,
+    "skipLLMForSimpleClips": true,
+    "maximumEditDistanceRatio": 0.72,
+    "minimumOutputWordRatio": 0.45,
+    "maximumOutputWordRatio": 1.55
+  },
+  "pasteRestoreDelayMilliseconds": 350
+}
